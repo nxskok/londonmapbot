@@ -5,6 +5,7 @@
 ```{r}
 library(tidyverse)
 library(sp)
+library(leaflet)
 ```
 
 boundary of toronto is more or less straight lines between these points
@@ -12,19 +13,30 @@ boundary of toronto is more or less straight lines between these points
 ```{r}
 boundary <- tribble(
   ~where, ~lat, ~long,
-"Steeles @ 427", 43.75, -79.63,
-"Steeles @ Pickering Townline", 43.85, -79.17,
-"Twyn Rivers @ Rouge River", 43.81, -79.15,
-"Rouge Beach", 43.79, -79.12,
-"Tommy Thompson Park", 43.61, -79.34,
+"Steeles @ 427", 43.75, -79.639,
+"Steeles @ Pickering Townline", 43.855, -79.17,
+"Twyn Rivers @ Rouge River", 43.815, -79.15,
+"Rouge Beach", 43.795, -79.115,
+"Tommy Thompson Park", 43.61, -79.33,
 "Gibraltar Point", 43.61, -79.39,
-"Sunnyside Beach", 43.64, -79.45,
-"Cliff Lumsden Park", 43.60, -79.50,
+"Sunnyside Beach", 43.635, -79.45,
+"Cliff Lumsden Park", 43.59, -79.50,
 "Marie Curtis Park", 43.58, -79.54,
-"427 @ Dixon", 43.69, -79.60,
-"Steeles @ 427", 43.75, -79.63,
+"Rathburn @ Mill", 43.645, -79.59,
+"Etobicoke Creek @ Eglinton", 43.645, -79.61,
+"Eglinton @ Renforth", 43.665, -79.59,
+"Steeles @ 427", 43.75, -79.639,
 )
 boundary
+```
+
+draw my polygon on the map?
+
+```{r}
+
+leaflet(boundary) %>% 
+  addTiles() %>% 
+  addPolygons(boundary$long, boundary$lat)
 ```
 
 use point.in.polygon, which I need to test first
@@ -51,9 +63,26 @@ point.in.polygon(test_pts$x, test_pts$y, polygon$x, polygon$y)
 ```
 check
 
-Toronto extrema
+random points in rectangle
 
 ```{r}
-summary(boundary)
+n_point <- 100
+tibble(lat = runif(n_point, min(boundary$lat), max(boundary$lat)),
+       long = runif(n_point, min(boundary$long), max(boundary$long))) -> d
+d %>% mutate(inside = point.in.polygon(d$long, d$lat, boundary$long, boundary$lat)) %>% 
+  mutate(colour = ifelse(inside == 1, "blue", "red")) -> d
+d
 ```
+
+theft from https://rstudio.github.io/leaflet/markers.html
+
+```{r}
+leaflet(d) %>% 
+  addTiles() %>% 
+  addCircleMarkers(color = d$colour) %>% 
+    addPolygons(boundary$long, boundary$lat)
+
+```
+
+
 
