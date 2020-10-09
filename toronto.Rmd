@@ -1,0 +1,12 @@
+## corners of toronto
+
+## packages
+
+```{r}
+library(tidyverse)
+```
+
+boundary of toronto is more or less straight lines between these points
+
+nw: Steeles @ 427: 43.75 -79.63
+ne: 
