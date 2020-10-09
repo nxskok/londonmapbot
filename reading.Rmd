@@ -1,0 +1,64 @@
+## reading
+
+## packages
+
+```{r}
+library(tidyverse)
+library(sp)
+library(leaflet)
+```
+
+## boundary
+
+```{r}
+reading_boundary <- tribble(
+  ~where, ~lat, ~long,
+  "Green Park", 51.432, -1.00,
+  "Grazeley", 51.39, -1.005,
+  "Shinfield South", 51.39, -0.95,
+  "M4 at Whitley Wood", 51.42, -0.93,
+  "Lower Earley", 51.425, -0.90,
+  "Woodley South", 51.435, -0.895,
+  "Woodley East", 51.461, -0.871,
+  "Waingels College", 51.467, -0.891,
+  "Kings Meadow", 51.461, -0.955,
+  "Meadow Way", 51.465, -0.954,
+  "Pinsent Lake", 51.469, -0.931,
+  "Emmer Green", 51.495, -0.958,
+  "Caversham Heights", 51.484, -0.999,
+  "Scours Lane Allotments", 51.469, -1.005,
+  "Deacon Way", 51.466, -1.017,
+  "Tilehurst", 51.475, -1.036,
+  "Sulham Hill", 51.455, -1.059,
+  "Fords Farm", 51.436, -1.040,
+)
+```
+
+## draw it
+
+```{r}
+leaflet(reading_boundary) %>% 
+  addTiles() %>% 
+  addPolygons(reading_boundary$long, reading_boundary$lat)
+```
+
+random points in rectangle
+
+```{r}
+n_point <- 100
+tibble(lat = runif(n_point, min(reading_boundary$lat), max(reading_boundary$lat)),
+       long = runif(n_point, min(reading_boundary$long), max(reading_boundary$long))) -> d
+d %>% mutate(inside = point.in.polygon(d$long, d$lat, reading_boundary$long, reading_boundary$lat)) %>% 
+  mutate(colour = ifelse(inside == 1, "blue", "red")) -> d
+d
+```
+
+map
+
+```{r}
+leaflet(d) %>% 
+  addTiles() %>% 
+  addCircleMarkers(color = d$colour) %>% 
+    addPolygons(reading_boundary$long, reading_boundary$lat)
+
+```
