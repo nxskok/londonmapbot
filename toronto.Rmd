@@ -8,5 +8,21 @@ library(tidyverse)
 
 boundary of toronto is more or less straight lines between these points
 
-nw: Steeles @ 427: 43.75 -79.63
-ne: 
+```{r}
+boundary <- tribble(
+  ~where, ~lat, ~long,
+"Steeles @ 427", 43.75, -79.63,
+"Steeles @ Pickering Townline", 43.85, -79.17,
+"Twyn Rivers @ Rouge River", 43.81, -79.15,
+"Rouge Beach", 43.79, -79.12,
+"Tommy Thompson Park", 43.61, -79.34,
+"Gibraltar Point", 43.61, -79.39,
+"Sunnyside Beach", 43.64, -79.45,
+"Cliff Lumsden Park", 43.60, -79.50,
+"Marie Curtis Park", 43.58, -79.54,
+"427 @ Dixon", 43.69, -79.60,
+"Steeles @ 427", 43.75, -79.63,
+)
+boundary
+```
+
