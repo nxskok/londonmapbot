@@ -62,3 +62,39 @@ leaflet(d) %>%
     addPolygons(reading_boundary$long, reading_boundary$lat)
 
 ```
+
+d
+
+```{r}
+d %>% filter(inside == 1) %>% slice_sample(n = 1) -> d1
+d1
+```
+
+
+mapbox
+
+```{r}
+mapbox_token <- Sys.getenv("MAPBOX_TOKEN")
+url <- str_c("https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/",
+             d1$long,
+             ",",
+             d1$lat,
+             ",15,0/600x400?access_token=",
+             mapbox_token)
+url
+```
+
+download this
+
+```{r}
+# tmp <- tempfile()
+download.file(url, "img.png")
+```
+
+```{r}
+leaflet(d1) %>% 
+  addTiles() %>% 
+  addCircleMarkers(color = d$colour)
+```
+
+
