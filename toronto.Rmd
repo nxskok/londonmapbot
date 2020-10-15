@@ -63,10 +63,15 @@ point.in.polygon(test_pts$x, test_pts$y, polygon$x, polygon$y)
 ```
 check
 
+```{r}
+boundary
+```
+
+
 random points in rectangle
 
 ```{r}
-n_point <- 100
+n_point <- 10
 tibble(lat = runif(n_point, min(boundary$lat), max(boundary$lat)),
        long = runif(n_point, min(boundary$long), max(boundary$long))) -> d
 d %>% mutate(inside = point.in.polygon(d$long, d$lat, boundary$long, boundary$lat)) %>% 
@@ -106,6 +111,8 @@ download this
 # tmp <- tempfile()
 download.file(url, "img.png")
 ```
+
+![](img.png)
 
 ```{r}
 leaflet(d1) %>% 

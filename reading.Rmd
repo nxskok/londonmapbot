@@ -91,6 +91,9 @@ download this
 download.file(url, "img.png")
 ```
 
+![](img.png)
+
+
 ```{r}
 leaflet(d1) %>% 
   addTiles() %>% 
